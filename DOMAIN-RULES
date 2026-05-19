@@ -1,0 +1,20 @@
+
+I rettangoli
+
+Un rettangolo di larghezza 10 posizionato a x = 0 occupa i pixel con indice da 0 a 9. 
+Il bordo destro geometrico è a x = 10, ma il pixel 10 non appartiene al rettangolo.
+
+      0     0. ...... .9 10. ...... .19
+      1     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A   : 2     0 @@@@@@@@ 9 ~~~~~~~~~~~~~~
+A/B : 3     0 @@@@@@@@ 9 10 @@@@@@@@ 19
+A/B : 4     0 @@@@@@@@ 9 10 @@@@@@@@ 19
+B   : 5     ~~~~~~~~~~~~ 10 @@@@@@@@ 19
+    : 6     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+sono da considerarsi NON-OVERLAPPED.
+
+solo se l'intersezione assume valori strettamente maggiori di 0 vengono considerati overlapped
+
+
