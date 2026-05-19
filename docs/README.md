@@ -1,11 +1,12 @@
 
+# side project per il meme
 
-date due etichette, ciascuna con
+primo mvp:
+dati due rettangoli, ciascuno con
 
-- anchor point nel grafico
+- anchor point sullo schermo
 - larghezza
 - altezza
-- possibile posizione del rettangolo
+- possibile posizione dei rettangoli
 
-capire se si sovrappongono e di quanto
-
+capire se si sovrappongono e di quanto (quanti pixel orizzontalmente e verticalmente e quanta percentuale delle forme geometriche è coperta)
