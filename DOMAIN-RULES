@@ -21,17 +21,16 @@ solo se l'intersezione assume valori strettamente maggiori di 0 vengono consider
 top     ->  y piccolo
 bottom  ->  y grande
 
-le coordinate vengono scritte in dei file "<nome>.test"
+le coordinate vengono scritte in dei file "<nome>.shape"
 
-il contenuto di un file .test deve essere:
+il contenuto di un file .shape deve essere:
 
 "larghezza_schermo" "altezza_schermo"\n
 "numero_di_figure" 
-"tipo_figura" "larghezza" "altezza" "coordinata_up_left"
-"tipo_figura" "larghezza" "altezza" "coordinata_up_left"
-"tipo_figura" "larghezza" "altezza" "coordinata_up_left"
-"tipo_figura" "vertice" "vertice" "vertice" "vertice"
-"tipo_figura" "centro" "raggio"
+"0" "centro" "raggio"
+"1" "lato" "coordinata_up_left"
+"2" "larghezza" "altezza" "coordinata_up_left"
+"n" "vertice" "vertice" "vertice" "vertice"
 
 tipo di figura varrà:
 0 per il cerchio con centro e raggio
@@ -39,5 +38,11 @@ tipo di figura varrà:
 2 per il rettangolo con larghezza e altezza
 n per tutte le altre figure con n vertici
 
+vertice/centro vengono identificati univocamente come coordinate x,y
 
+Esempio per un rettangolo
+2 10 4 0,0 
 
+sottointende che i 4 vertici del rettangolo siano
+0,0 0,9
+3,0 3,9
