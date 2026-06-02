@@ -18,3 +18,26 @@ sono da considerarsi NON-OVERLAPPED.
 solo se l'intersezione assume valori strettamente maggiori di 0 vengono considerati overlapped
 
 
+top     ->  y piccolo
+bottom  ->  y grande
+
+le coordinate vengono scritte in dei file "<nome>.test"
+
+il contenuto di un file .test deve essere:
+
+"larghezza_schermo" "altezza_schermo"\n
+"numero_di_figure" 
+"tipo_figura" "larghezza" "altezza" "coordinata_up_left"
+"tipo_figura" "larghezza" "altezza" "coordinata_up_left"
+"tipo_figura" "larghezza" "altezza" "coordinata_up_left"
+"tipo_figura" "vertice" "vertice" "vertice" "vertice"
+"tipo_figura" "centro" "raggio"
+
+tipo di figura varrà:
+0 per il cerchio con centro e raggio
+1 per il quadrato con larghezza e altezza
+2 per il rettangolo con larghezza e altezza
+n per tutte le altre figure con n vertici
+
+
+

@@ -9,4 +9,4 @@ dati due rettangoli, ciascuno con
 - altezza
 - possibile posizione dei rettangoli
 
-capire se si sovrappongono e di quanto (quanti pixel orizzontalmente e verticalmente e quanta percentuale delle forme geometriche è coperta)
+capire se si sovrappongono e di quanto (quanti pixel orizzontalmente e verticalmente e quanta percentuale delle forme geometriche è coperta rispetto all'unione)

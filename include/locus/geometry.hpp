@@ -1,5 +1,9 @@
+#pragma once
+
 #include <algorithm>
 
+
+namespace locus {
 
 struct Point{
     int x;
@@ -11,35 +15,42 @@ struct Size{
     int height;
 };
 
-struct Rectangle{
+struct Rect{
     Point top_left;
     Size size;
 };
 
-
-
-int left(Rectangle rect){
+inline int left(Rect const& rect){
     return rect.top_left.x;
 }
 
-int right(Rectangle rect){
-    
+inline int right(Rect const& rect){
     return rect.top_left.x + rect.size.width;
 }
 
-int top(Rectangle rect){
+inline int top(Rect const& rect){
     return rect.top_left.y;
 }
 
-int bottom(Rectangle rect){    
+inline int bottom(Rect const& rect){    
     return rect.top_left.y + rect.size.height;
 }
 
+inline int area(Rect const& a){
+    return a.size.width * a.size.height;
+}
 
-int overlap_width(Rectangle a, Rectangle b){
+
+inline int overlap_width(Rect const& a, Rect const& b){
     return std::max(0, std::min(right(a), right(b)) - std::max(left(a), left(b)));
 }
 
-int overlap_height(Rectangle a, Rectangle b){
+inline int overlap_height(Rect const& a, Rect const& b){
     return std::max(0, std::min(bottom(a), bottom(b)) - std::max(top(a), top(b)));
 }
+
+inline int overlap_area(Rect const& a, Rect const& b){
+    return overlap_width(a,b) * overlap_height(a,b);
+}
+
+} 
