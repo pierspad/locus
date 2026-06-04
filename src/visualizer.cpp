@@ -13,17 +13,17 @@ constexpr std::string fileName="1.shape";
 
 
 void add_rectangle_to_vector(std::ifstream& ifile, std::vector<Rect>& shapes){
-    int width{0};
-    int height{0};
+    int rect_width{0};
+    int rect_height{0};
     int top{0};
     int left{0};
-    ifile >> width;
-    ifile >> height;
+    ifile >> rect_width;
+    ifile >> rect_height;
     ifile >> top;
     ifile >> left;
     shapes.push_back({
         .top_left = {.x = left, .y = top},
-        .size = {.width = width, .height = height}
+        .size = {.width = rect_width, .height = rect_height}
     });
 }
 
@@ -151,9 +151,9 @@ std::unordered_map<Point, Color> refresh_color_pixels_with_shapes(std::vector<Co
     
     Point up_left, up_right, bottom_left, bottom_right;
     up_left = {.x = rect.top_left.x, .y = rect.top_left.y};
-    up_right = {.x = rect.top_left.x, .y = rect.top_left.y};
-    bottom_left = {.x = rect.top_left.x, .y = rect.top_left.y};
-    bottom_right = {.x = rect.top_left.x, .y = rect.top_left.y};
+    up_right = {.x = rect.top_left.x + rect.size.width, .y = rect.top_left.y};
+    bottom_left = {.x = rect.top_left.x, .y = rect.top_left.y - rect.size.height};
+    bottom_right = {.x = rect.top_left.x + rect.size.width, .y = rect.top_left.y - rect.size.height};
     
     if(rectangle){
         find_coordinates_to_draw_line_a_b(pixels, up_left, up_right, shape_id, points_to_draw);
@@ -189,8 +189,8 @@ int main(){
 
     std::unordered_map<Point, Color> points_of_shapes_to_draw;
 
-    std::println("Width: {} - Height: {} \n", width, height);
-    std::println("Number of Figures: {}\n", number_of_figures);
+    std::print("Width: {} - Height: {}\n", width, height);
+    std::print("Number of Figures: {}\n\n", number_of_figures);
 
     //disegna pixel bianchi
     for (int y = 0; y<height; y++){
@@ -212,7 +212,13 @@ int main(){
         points_of_shapes_to_draw = refresh_color_pixels_with_shapes(pixels,shapes[i], i, width, height);
     }
 
-    //disegna figure geometriche di sopra
+    // disegna figure geometriche di sopra
+     for (const auto& [point, color] : points_of_shapes_to_draw) {
+        int index_colors = (point.y * width) + point.x;
+        pixels[index_colors].red = color.red;
+        pixels[index_colors].green = color.green;
+        pixels[index_colors].blue = color.blue;
+    }
 
     // stampa su file
     std::ofstream outFile("visualization.ppm", std::ios::binary);

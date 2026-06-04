@@ -15,20 +15,20 @@ target_include_directories( locus INTERFACE
 
 # EXE 1
 add_executable(
-    locus_visualizer 
+    visualizer 
     src/visualizer.cpp
 )
 target_link_libraries(
-    locus_visualizer 
+    visualizer 
     PRIVATE locus
 )
 
 # EXE 2
 add_executable(
-    locus_solver 
+    solver 
     src/solver.cpp
 )
 target_link_libraries(
-    locus_solver 
+    solver 
     PRIVATE locus
 )

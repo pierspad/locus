@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <functional>
+#include <string_view>
 
 struct Point{
     int x{0};
@@ -42,15 +43,13 @@ namespace std {
 
     
     template<>
-    struct formatter<Point>{
-        constexpr auto parse(format_parse_context& ctx){
-            return ;
+    struct formatter<Point> : formatter<string_view> {
+        auto format(const Point& p, format_context& ctx) const {
+            
+            auto str = std::format("({}, {})", p.x, p.y);
+            return formatter<string_view>::format(str, ctx);
         }
-
-        auto format(const Point& p, format_context ctx) const{
-            return format_to(ctx.out(), );
-        }
-    }
+    };
 
 
 }
