@@ -51,7 +51,7 @@ void add_shape_to_vector(std::ifstream& ifile, std::vector<Rect>& shapes){
 Color get_color_by_id(int shape_id){
     Color color_i;
     
-    uint8_t div_color = shape_id % 255;
+    uint8_t div_color = (shape_id*163) % 255;
     int module_color = shape_id % 7;
 
     switch(module_color){
