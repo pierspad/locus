@@ -1,31 +1,50 @@
 #include <print>
 #include <vector>
-#include <iostream> 
 #include <fstream>
 #include <string>
 
-constexpr std::string shapePath="./shape_files";
+constexpr std::string shapePath="./shape_files/";
 constexpr std::string fileName="1.shape";
 
 
-void readFigures(){
-    
+struct Color{
+    uint8_t red{0};
+    uint8_t green{0};
+    uint8_t blue{0};
+};
+
+void readScreenSize(std::ifstream& ifile, int& width, int& height){
+
 }
 
 int main(){
 
-    constexpr int width = 800;
-    constexpr int height = 600;
+    int width{0};
+    int height{0};
+    int number_of_figures{0};
 
-    std::vector<std::uint8_t> pixels(width*height*3,0);
+    std::ifstream ifile(shapePath+fileName);
+    ifile >> width;
+    ifile >> height;
+    ifile >> number_of_figures;
 
+    std::vector<Color> pixels(width*height);
+
+    std::println("Width: {} - Height: {} \n", width, height);
+    std::println("Number of Figures: {}\n");
+   
+    
+
+
+
+
+    /*
     for (int y = 0; y<height; y++){
         for(int x = 0; x<width; x++){
-            int index = ((y*width) + x) * 3;
-
-            pixels[index]     = static_cast<std::uint8_t>((x * 255) / width);  // Rosso
-            pixels[index + 1] = static_cast<std::uint8_t>((y * 255) / height); // Verde
-            pixels[index + 2] = 128;
+            int index = (y*width) + x;
+            pixels[index].red = 0;
+            pixels[index].green = 0;
+            pixels[index].blue = 0;
         }
     }
 
@@ -37,5 +56,7 @@ int main(){
     std::print("Immagine salvata in 'visualization.ppm'\n");
     
     return 0;
+
+    */
 
 }
