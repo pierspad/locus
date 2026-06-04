@@ -1,11 +1,10 @@
 #include <print>
 #include <vector>
 #include <fstream>
-#include <string>
+#include <string_view>
 
-constexpr std::string shapePath="./shape_files/";
-constexpr std::string fileName="1.shape";
-
+constexpr std::string_view shapePath="./shape_files/";
+constexpr std::string_view fileName="1.shape";
 
 struct Color{
     uint8_t red{0};
@@ -33,7 +32,7 @@ int main(){
     std::println("Width: {} - Height: {} \n", width, height);
     std::println("Number of Figures: {}\n");
    
-    
+
 
 
 
