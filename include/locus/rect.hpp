@@ -44,5 +44,4 @@ inline int overlap_height(Rect const& a, Rect const& b){
 inline int overlap_area(Rect const& a, Rect const& b){
     return overlap_width(a,b) * overlap_height(a,b);
 }
-
-} 
+ 

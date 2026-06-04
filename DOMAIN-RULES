@@ -28,8 +28,8 @@ il contenuto di un file .shape deve essere:
 "larghezza_schermo" "altezza_schermo"\n
 "numero_di_figure" 
 "0" "centro" "raggio"
-"1" "lato" "coordinata_up_left"
-"2" "larghezza" "altezza" "coordinata_up_left"
+"1" "lato" "coordinata_up" "coordinata_left"
+"2" "larghezza" "altezza" "coordinata_up" "coordinata_left"
 "n" "vertice" "vertice" "vertice" "vertice"
 
 tipo di figura varrà:
