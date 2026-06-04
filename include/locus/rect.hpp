@@ -1,15 +1,17 @@
 
-#include <algorithm>
-#include "point.hpp"
+#pragma once
 
-struct Size{
+#include <algorithm>
+#include "structs.hpp"
+
+struct RectSize{
     int width{0};
     int height{0};
 };
 
 struct Rect{
     Point top_left;
-    Size size;
+    RectSize size;
 };
 
 inline int left(Rect const& rect){

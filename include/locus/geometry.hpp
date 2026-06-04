@@ -1,6 +1,6 @@
 #pragma once
 
-#include "point.hpp"
+#include "structs.hpp"
 #include "rect.hpp"
 
 namespace locus {

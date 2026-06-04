@@ -6,18 +6,29 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+
 add_library(locus INTERFACE)
 
 target_include_directories( locus INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-enable_testing()
-
-add_executable(geometry_tests
-    tests/geometry_tests.cpp
+# EXE 1
+add_executable(
+    locus_visualizer 
+    src/visualizer.cpp
+)
+target_link_libraries(
+    locus_visualizer 
+    PRIVATE locus
 )
 
-target_link_libraries(geometry_tests PRIVATE locus)
-
-add_test(NAME geometry_tests COMMAND geometry_tests)
+# EXE 2
+add_executable(
+    locus_solver 
+    src/solver.cpp
+)
+target_link_libraries(
+    locus_solver 
+    PRIVATE locus
+)
