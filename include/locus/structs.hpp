@@ -12,9 +12,9 @@ struct Point{
 };
 
 struct Color{
-    uint8_t red{0};
-    uint8_t green{0};
-    uint8_t blue{0};
+    uint8_t red{255};
+    uint8_t green{255};
+    uint8_t blue{255};
     
     bool operator==(Color const&) const = default;
 };

@@ -126,14 +126,14 @@ void find_coordinates_to_draw_line_a_b(std::vector<Color>& pixels, Point a, Poin
         std::print("ERRORE: Coordinate uguali.\nA: {}\nB: {}\n", a, b);
     }
     else if(a.x==b.x){
-        for(int i=min_y; i<max_y; i++){
+        for(int i=min_y; i<max_y+1; i++){
             p.x = a.x;
             p.y = i;
             points_to_draw[p] = color_i;
         }
     }
     else if(a.y==b.y){
-        for(int i=min_x; i<max_x; i++){
+        for(int i=min_x; i<max_x+1; i++){
             p.x = i;
             p.y = a.y;
             points_to_draw[p] = color_i;
@@ -145,15 +145,14 @@ void find_coordinates_to_draw_line_a_b(std::vector<Color>& pixels, Point a, Poin
     
 }
 
-std::unordered_map<Point, Color> refresh_color_pixels_with_shapes(std::vector<Color>& pixels, Rect rect, int shape_id, int screen_widht, int screen_height){
-    std::unordered_map<Point, Color> points_to_draw;
+void refresh_color_pixels_with_shapes(std::vector<Color>& pixels, Rect rect, int shape_id, int screen_widht, int screen_height, std::unordered_map<Point, Color>& points_to_draw){
     bool rectangle = true;
     
     Point up_left, up_right, bottom_left, bottom_right;
     up_left = {.x = rect.top_left.x, .y = rect.top_left.y};
     up_right = {.x = rect.top_left.x + rect.size.width, .y = rect.top_left.y};
-    bottom_left = {.x = rect.top_left.x, .y = rect.top_left.y - rect.size.height};
-    bottom_right = {.x = rect.top_left.x + rect.size.width, .y = rect.top_left.y - rect.size.height};
+    bottom_left = {.x = rect.top_left.x, .y = rect.top_left.y + rect.size.height};
+    bottom_right = {.x = rect.top_left.x + rect.size.width, .y = rect.top_left.y + rect.size.height};
     
     if(rectangle){
         find_coordinates_to_draw_line_a_b(pixels, up_left, up_right, shape_id, points_to_draw);
@@ -167,8 +166,6 @@ std::unordered_map<Point, Color> refresh_color_pixels_with_shapes(std::vector<Co
 
         }
     }
-
-    return points_to_draw;
 }
 
 
@@ -193,14 +190,6 @@ int main(){
     std::print("Number of Figures: {}\n\n", number_of_figures);
 
     //disegna pixel bianchi
-    for (int y = 0; y<height; y++){
-        for(int x = 0; x<width; x++){
-            int index = (y*width) + x;
-            pixels[index].red = 0;
-            pixels[index].green = 0;
-            pixels[index].blue = 0;
-        }
-    }
 
     // leggi le forme dal file e mettile nel vettore
     for(int i = 0; i<number_of_figures; i++){
@@ -209,7 +198,7 @@ int main(){
 
     // calcola la posizione e il colore delle linee 
     for(int i  = 0; i<shapes.size(); i++){
-        points_of_shapes_to_draw = refresh_color_pixels_with_shapes(pixels,shapes[i], i, width, height);
+        refresh_color_pixels_with_shapes(pixels,shapes[i], i, width, height, points_of_shapes_to_draw);
     }
 
     // disegna figure geometriche di sopra
@@ -225,7 +214,7 @@ int main(){
     std::println(outFile, "P6");
     std::println(outFile, "{} {}", width, height);
     std::println(outFile, "255");
-    outFile.write(reinterpret_cast<const char*>(pixels.data()), pixels.size());
+    outFile.write(reinterpret_cast<const char*>(pixels.data()), pixels.size() * sizeof(Color));
 
 
     std::print("Immagine salvata in 'visualization.ppm'\n");
