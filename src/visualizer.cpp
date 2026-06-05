@@ -111,61 +111,136 @@ Color get_color_by_id(int shape_id){
     return color_i;
 }
 
+void swap_Points(Point& v1, Point& v2){
+    Point _tmp{
+        .x = v1.x,
+        .y = v1.y
+    };
 
-void find_coordinates_to_draw_line_a_b(std::vector<Color>& pixels, Point a, Point b, int shape_id, std::unordered_map<Point,Color>& points_to_draw){
-    int max_x, max_y, min_x, min_y;
-    max_x = std::max(a.x,b.x);
-    max_y = std::max(a.y,b.y);
-    min_x = std::min(a.x,b.x);
-    min_y = std::min(a.y,b.y);
+    v1.x = v2.x;
+    v1.y = v2.y;
 
-    Color color_i = get_color_by_id(shape_id);
-    Point p;
-
-    if(a.x==b.x && a.y == b.y){
-        std::print("ERRORE: Coordinate uguali.\nA: {}\nB: {}\n", a, b);
-    }
-    else if(a.x==b.x){
-        for(int i=min_y; i<max_y+1; i++){
-            p.x = a.x;
-            p.y = i;
-            points_to_draw[p] = color_i;
-        }
-    }
-    else if(a.y==b.y){
-        for(int i=min_x; i<max_x+1; i++){
-            p.x = i;
-            p.y = a.y;
-            points_to_draw[p] = color_i;
-        }
-    }
-    else{ // diagonale
-        //linea diagonale, da implementare più avanti
-    }
-    
+    v2.x = _tmp.x;
+    v2.y = _tmp.y;
 }
 
-void refresh_color_pixels_with_shapes(std::vector<Color>& pixels, Rect rect, int shape_id, int screen_widht, int screen_height, std::unordered_map<Point, Color>& points_to_draw){
-    bool rectangle = true;
+void draw_line_between_v1_v2(Point& v1, Point& v2, const Color& color, std::unordered_map<Point,Color>& points_to_draw){
     
-    Point up_left, up_right, bottom_left, bottom_right;
-    up_left = {.x = rect.top_left.x, .y = rect.top_left.y};
-    up_right = {.x = rect.top_left.x + rect.size.width, .y = rect.top_left.y};
-    bottom_left = {.x = rect.top_left.x, .y = rect.top_left.y + rect.size.height};
-    bottom_right = {.x = rect.top_left.x + rect.size.width, .y = rect.top_left.y + rect.size.height};
-    
-    if(rectangle){
-        find_coordinates_to_draw_line_a_b(pixels, up_left, up_right, shape_id, points_to_draw);
-        find_coordinates_to_draw_line_a_b(pixels, up_right, bottom_right, shape_id, points_to_draw);
-        find_coordinates_to_draw_line_a_b(pixels, bottom_right, bottom_left, shape_id, points_to_draw);
-        find_coordinates_to_draw_line_a_b(pixels, bottom_left, up_left, shape_id, points_to_draw);
+    Point p;
+
+    if(v1==v2){
+        std::print("ERRORE: Coordinate uguali.\nA: {}\nB: {}\n", v1, v2);
     }
 
-    for(int y = 0; y<screen_height; y++){
-        for(int x = 0; x < screen_widht; x++){
+    // il v1 è sempre quello con la x inferiore
+    if(v1.x < v2.x){
+        swap_Points(v1,v2);
+    }
+    
+    int horizontal_dir = 1;
+    int vertical_dir = 1;
+    if(v1.y > v2.y){
+        vertical_dir = -1;
+    }
+    
+    float n_segmenti, len_segmento;
+    int x_diff, y_diff;
+    
+    x_diff = abs(v1.x-v2.x);
+    y_diff = abs(v1.y-v2.y);
 
+    bool rect_vert = false;
+
+    if(x_diff < y_diff){
+        int _tmp = x_diff;
+        x_diff = y_diff;
+        y_diff = _tmp;
+        rect_vert = true;
+    }
+
+    len_segmento = x_diff/y_diff;
+    n_segmenti = y_diff; 
+    int n_segmentip1 = 0;
+
+    int _tmp = x_diff;
+
+    while((_tmp % y_diff) != 0){
+        n_segmentip1 += 1;
+        _tmp -=1;
+    }
+
+    int n_segmenti_norm = n_segmenti - n_segmentip1;
+
+
+    if(rect_vert){
+        for(int i = 0; i<n_segmentip1; i++){
+            for(int j = 0; j<len_segmento+1; j++){
+                p.x = v1.x + (i * vertical_dir);
+                p.y = v1.y + (i * (len_segmento + 1)) + j;
+                points_to_draw[p] = color;
+            }
+        }
+        for(int i = 0; i<n_segmenti_norm; i++){
+            for(int j = 0; j<len_segmento; j++){
+                p.x = v1.x + (n_segmentip1 * (len_segmento+1))  + (i * vertical_dir);
+                p.y = v1.y + (n_segmentip1)                     + (i * len_segmento) + j;
+                points_to_draw[p] = color;
+            }
         }
     }
+    else{
+        for(int i = 0; i<n_segmentip1; i++){
+            for(int j = 0; j<len_segmento+1; j++){
+                p.x = v1.x + (i * (len_segmento + 1)) + j;
+                p.y = v1.y + (i * vertical_dir);
+                points_to_draw[p] = color;
+            }
+        }
+        for(int i = 0; i<n_segmenti_norm; i++){
+            for(int j = 0; j<len_segmento; j++){
+                p.x = v1.x + (n_segmentip1)                     + (i * len_segmento) + j;
+                p.y = v1.y + (n_segmentip1 * (len_segmento+1))  + (i * vertical_dir);
+                points_to_draw[p] = color;
+            }
+        }
+    }
+
+}
+
+void annotate_lines_between_vertices(std::vector<Point>& vertices, int shape_id, std::unordered_map<Point,Color>& points_to_draw){
+    
+    int size = vertices.size();
+    if(size <2){
+        std::print("Servono almeno 2 vertici da disegnare");
+        return;
+    }
+
+    Color color_i = get_color_by_id(shape_id);
+
+    for(int i = 0; i<vertices.size()-1; i++){
+        draw_line_between_v1_v2(vertices[i], vertices[i+1], color_i, points_to_draw);
+    }   
+}
+
+void refresh_color_pixels_with_shapes(Rect rect, int shape_id, int screen_widht, int screen_height, std::unordered_map<Point, Color>& points_to_draw){
+    
+    bool rectangle = true;
+    std::vector<Point> vertices;
+    
+    if(rectangle){
+        Point up_left, up_right, bottom_left, bottom_right;
+        up_left = {.x = rect.top_left.x, .y = rect.top_left.y};
+        up_right = {.x = rect.top_left.x + rect.size.width, .y = rect.top_left.y};
+        bottom_left = {.x = rect.top_left.x, .y = rect.top_left.y + rect.size.height};
+        bottom_right = {.x = rect.top_left.x + rect.size.width, .y = rect.top_left.y + rect.size.height};
+
+        vertices.push_back(up_left);
+        vertices.push_back(up_right);
+        vertices.push_back(bottom_left);
+        vertices.push_back(bottom_right);
+    }
+
+    annotate_lines_between_vertices(vertices, shape_id, points_to_draw);
 }
 
 
@@ -198,7 +273,7 @@ int main(){
 
     // calcola la posizione e il colore delle linee 
     for(int i  = 0; i<shapes.size(); i++){
-        refresh_color_pixels_with_shapes(pixels,shapes[i], i, width, height, points_of_shapes_to_draw);
+        refresh_color_pixels_with_shapes(shapes[i], i, width, height, points_of_shapes_to_draw);
     }
 
     // disegna figure geometriche di sopra
