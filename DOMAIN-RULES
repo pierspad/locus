@@ -27,10 +27,12 @@ il contenuto di un file .shape deve essere:
 
 "larghezza_schermo" "altezza_schermo"\n
 "numero_di_figure" 
-"0" "centro" "raggio"
-"1" "lato" "coordinata_up" "coordinata_left"
-"2" "larghezza" "altezza" "coordinata_up" "coordinata_left"
+"0" "raggio" "centro"
+"1" "lato" "vertice"
+"2" "larghezza" "altezza" "vertice"
 "n" "vertice" "vertice" "vertice" "vertice"
+
+dove sia centro e vertice sono shorthand per "coordinata_up,coordinata_left"
 
 tipo di figura varrà:
 0 per il cerchio con centro e raggio
@@ -43,11 +45,14 @@ vertice/centro vengono identificati univocamente come coordinate x,y
 Esempio per un rettangolo
 2 10 4 0,0 
 
+2 = rettangoo
+10 = larghezza
+4 = altezza
+coordinata 1 = 0,0 (upper left corner)
+
 sottointende che i 4 vertici del rettangolo siano
 0,0 0,9
 3,0 3,9
-
-
 
 
 
