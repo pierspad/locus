@@ -59,12 +59,10 @@ void readRectangle(std::stringstream& ss, std::string& line, std::vector<Shape>&
     char comma;
     ss >> width >> height >> cords.x >> comma >> cords.y;
 
-    std::println("{}", width);
-    std::println("width");
+    std::println("width: {}", width);
     std::println("");
 
-    std::println("{}", height);
-    std::println("height");
+    std::println("height: {}", height);
     std::println("");
 
     cords.print();
@@ -98,8 +96,7 @@ void readCircle(std::stringstream& ss, std::string& line, std::vector<Shape>& sh
     char comma;
     ss >> radius >> cords.x >> comma >> cords.y;
 
-    std::println("{}", radius);
-    std::println("radius");
+    std::println("radius: {}", radius);
     std::println("");
 
     cords.print();
@@ -113,7 +110,15 @@ void ingestInput(std::string& fileName, std::vector<Shape>& shapes){
 
     int i = 0;
     while(std::getline(file, line)){
-        std::stringstream ss (line);
+        const auto pos = line.find_first_not_of(" \t\r\n");
+
+        if (pos == std::string::npos ||
+            line.compare(pos, 1, "#") == 0 ||
+            line.compare(pos, 2, "//") == 0) {
+            continue;
+        }
+
+        std::stringstream ss(line);
 
         int shapeType;
         if(!(ss >> shapeType)){

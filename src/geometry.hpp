@@ -36,6 +36,7 @@ struct Polygon{
     }
 };
 
+
 struct Circle{
     Coordinate center;
     double radius;

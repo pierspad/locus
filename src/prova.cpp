@@ -1,7 +1,8 @@
 
 #include <vector>
 #include <print>
-
+#include <fstream>
+#include <sstream>
 
 void test(std::vector<int>& vec1){
     int size = vec1.size();
@@ -11,15 +12,25 @@ void test(std::vector<int>& vec1){
 }
 
 int main(){
-    std::vector<int> vec;
 
-    vec.push_back(0);
-    vec.push_back(1);
-    vec.push_back(2);
-    vec.push_back(3);
-    vec.push_back(4);
-    vec.push_back(5);
+    std::string fileName="../prova.txt";
 
-    test(vec);
+    std::ifstream file(fileName);
+    std::string line;
+
+    std::getline(file, line);
+
+    const auto pos = line.find_first_not_of(" \t\r\n");
+
+    if (pos == std::string::npos) {
+        std::println("pos {}: not found", pos);
+    }
+    if (line.compare(pos, 1, "#") == 0 ) {
+        std::println("pos {}: #", pos);
+    }
+    if (line.compare(pos, 2, "//") == 0) {
+        std::println("pos {}: //", pos);
+    }
+
 
 }
