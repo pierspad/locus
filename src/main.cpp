@@ -1,6 +1,6 @@
 
-#include "./input.hpp"
-#include "./geometry.hpp"
+#include "../include/input.hpp"
+#include "../include/geometry.hpp"
 
 
 int main(){
