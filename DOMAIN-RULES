@@ -26,40 +26,42 @@ le coordinate vengono scritte in dei file "<nome>.shape"
 il contenuto di un file .shape deve essere:
 
 "larghezza_schermo" "altezza_schermo"\n
-"numero_di_figure" 
-"0" "raggio" "centro"
-"1" "lato" "vertice"
-"2" "larghezza" "altezza" "vertice"
-"n" "vertice" "vertice" "vertice" "vertice"
+"tipo di figura"
+"dati figura"
 
-dove sia centro e vertice sono shorthand per "coordinata_up,coordinata_left"
-
-tipo di figura varrà:
-0 per il cerchio con centro e raggio
-1 per il quadrato con larghezza e altezza
-2 per il rettangolo con larghezza e altezza
-n per tutte le altre figure con n vertici
-
-vertice/centro vengono identificati univocamente come coordinate x,y
-
-Esempio per un rettangolo
-2 10 4 0,0 
-
-2 = rettangoo
-10 = larghezza
-4 = altezza
-coordinata 1 = 0,0 (upper left corner)
-
-sottointende che i 4 vertici del rettangolo siano
-0,0 0,9
-3,0 3,9
+ogni figura ha dei parametri diversi, esempio
 
 
+Square 
+side topLeftCoord.x,topLeftCoord.y
+
+Rectangle 
+width, height topLeftCoord.x,topLeftCoord.y
+
+ConvexPolygon 
+vertex1.x,vertex1.y vertex2.x,vertex2.y vertex3.x,vertex3.y vertex4.x,vertex4.y vertex5.x,vertex5.y 
+
+Ellipse
+1stSemiaxis 2ndSemiaxis center.x,center.y
+
+Circle
+radius center.x,center.y
 
 
-1,1
-4,4
+o meglio:
 
+Square 
+8 3,3 
 
-1,1
-7,13
+Rectangle 
+10 4 4,4 
+
+ConvexPolygon 
+1,1 2,2 3,3 4,4 5,5
+
+Ellipse
+5 7 0,0
+
+Circle
+5 0,0
+
