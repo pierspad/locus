@@ -83,28 +83,31 @@ struct Rectangle{
     }
 };
 
-
-//TODO
 struct Ellipse{
     Coordinate center;
-    double radius;
+    double radiusX, radiusY;
     
     [[nodiscard]]
-    double getPerimeter() const{
-        return std::numbers::pi * 2 * radius; 
-    };
+    double getPerimeter() const {
+        const double a = radiusX;
+        const double b = radiusY;
 
-    [[nodiscard]]
-    double getArea() const{
-        return std::numbers::pi * radius * radius;
+        return std::numbers::pi *
+            (3 * (a + b) -
+            std::sqrt((3*a + b) * (a + 3*b)));
     }
 
-    void print() const{
+    [[nodiscard]]
+    double getArea() const {
+        return std::numbers::pi * radiusX * radiusY;
+    }
+
+    void print() const {
         std::print("center: ");
         center.print();
-        std::println("");
-        std::print("radius: {} - ", radius);
-        center.print();
+
+        std::println("radiusX: {}", radiusX);
+        std::println("radiusY: {}", radiusY);
     }
 };
 
@@ -132,7 +135,12 @@ struct Circle{
 };
 
 
-using Shape = std::variant<ConvexPolygon, Rectangle, Ellipse, Circle>;
+using Shape = std::variant< 
+                            ConvexPolygon, 
+                            Rectangle, 
+                            Ellipse, 
+                            Circle
+                        >;
 
 
 enum class ShapeCode{
