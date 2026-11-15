@@ -16,6 +16,8 @@ void dye(Color& surface, const Color& pigment){
     surface.b = pigment.b;
 }
 
+
+
 // TODO implementa anche la modalità rettangolo pieno
 void drawRectangle(
                 bool full,
@@ -66,9 +68,9 @@ void drawRectangle(
 
 void printColorOnFile(std::ofstream& out, const Color& color) {
     out << std::format("{} {} {} ",
-        static_cast<int>(color.r),
-        static_cast<int>(color.g),
-        static_cast<int>(color.b)
+        color.r,
+        color.g,
+        color.b
     );
 }
 
@@ -89,19 +91,26 @@ void drawOnCanvas(
         std::visit([&](const auto& concreteShape) {
             using T = std::decay_t<decltype(concreteShape)>;
 
-            /*if constexpr (std::is_same_v<T, ConvexPolygon>) {
-                drawRectangle(docWidth, docHeight, _canvas, concreteShape);
-            }*/
+            /*
             if constexpr (std::is_same_v<T, Rectangle>) {
                 bool full = false;
                 drawRectangle(full, docWidth, docHeight, black, _canvas, concreteShape);
             }
-           /*if constexpr (std::is_same_v<T, Ellipse>) {
-                drawRectangle(docWidth, docHeight, _canvas, concreteShape);
+                */
+            if constexpr (std::is_same_v<T, Rectangle>) {
+                bool full = false;
+                drawRectangle(full, docWidth, docHeight, black, _canvas, concreteShape);
             }
-            if constexpr (std::is_same_v<T, Circle>) {
-                drawRectangle(docWidth, docHeight, _canvas, concreteShape);
-            }*/
+           /*   
+            if constexpr (std::is_same_v<T, Rectangle>) {
+                bool full = false;
+                drawRectangle(full, docWidth, docHeight, black, _canvas, concreteShape);
+            }
+            if constexpr (std::is_same_v<T, Rectangle>) {
+                bool full = false;
+                drawRectangle(full, docWidth, docHeight, black, _canvas, concreteShape);
+            }
+                */
         }, shape);
     }
 }
