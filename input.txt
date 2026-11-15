@@ -1,21 +1,40 @@
 
 
 
+
+
+
+
+
+
+
+1920 1080
+
 Square 
-8 3,3
+8 3,3  
 
-Rectangle 
-10 4 4,4 
+Square 
+125 1080,52  
 
-ConvexPolygon 
-1,1 2,2 3,3 4,4 5,5
+Square 
+400 756,354  
 
 
+
+
+
+
+
+# Rectangle 
+# 10 4 4,4 
+
+# 
+# ConvexPolygon 
+# 1,1 2,2 3,3 4,4 5,5
+# 
 # Ellipse
-# 5 0,0
-
+# 5 7 0,0
+# 
 # Circle
 # 5 0,0
-
-
 

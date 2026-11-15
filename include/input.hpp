@@ -4,7 +4,7 @@
 #include <sstream>
 #include <print>
 
-#include "./geometry.hpp"
+#include "../include/geometry.hpp"
 
 
 // ####################
@@ -23,7 +23,8 @@ auto printShape =   [](const auto& shape) {
                     };
 
 
-void cleanLineFromComments(std::string& line){
+void cleanLineFromComments(
+            std::string& line){
         if(auto pos = line.find("#"); pos != std::string::npos){
             line.erase(pos);
         }
@@ -33,19 +34,25 @@ void cleanLineFromComments(std::string& line){
         }
 }
                     
-void readPolygon(std::stringstream& ss, std::string& line, std::vector<Shape>& shapes){
+void readPolygon(
+            std::stringstream& ss, 
+            std::string& line, 
+            std::vector<Shape>& shapes){
 
-    Coordinate _tmpCords;
-    int i=0;
-    char comma;
+        Coordinate _tmpCords;
+        int i=0;
+        char comma;
 
-    while(ss >> _tmpCords.x >> comma >> _tmpCords.y){
-        std::println("vertex {} - x: {:<4}\ty: {}", i, _tmpCords.x, _tmpCords.y);
-        i++;
+        while(ss >> _tmpCords.x >> comma >> _tmpCords.y){
+            std::println("vertex {} - x: {:<4}\ty: {}", i, _tmpCords.x, _tmpCords.y);
+            i++;
+        }
     }
-}
 
-void readRectangle(std::stringstream& ss, std::string& line, std::vector<Shape>& shapes){ 
+void readRectangle(
+            std::stringstream& ss, 
+            std::string& line, 
+            std::vector<Shape>& shapes){ 
 
     Coordinate _tmpCords;
     double _width, _height;
@@ -64,7 +71,10 @@ void readRectangle(std::stringstream& ss, std::string& line, std::vector<Shape>&
     std::visit(printShape, shapes.back());
 }
 
-void readSquare(std::stringstream& ss, std::string& line, std::vector<Shape>& shapes){
+void readSquare(
+            std::stringstream& ss, 
+            std::string& line, 
+            std::vector<Shape>& shapes){
     
     Coordinate _tmpCords;
     double side;
@@ -83,7 +93,10 @@ void readSquare(std::stringstream& ss, std::string& line, std::vector<Shape>& sh
     std::visit(printShape, shapes.back());
 }
 
-void readEllipse(std::stringstream& ss, std::string& line, std::vector<Shape>& shapes){
+void readEllipse(
+            std::stringstream& ss, 
+            std::string& line, 
+            std::vector<Shape>& shapes){
     
     Coordinate _tmpCords;
     double _radiusX, _radiusY;
@@ -102,7 +115,10 @@ void readEllipse(std::stringstream& ss, std::string& line, std::vector<Shape>& s
     std::println("radiusY: {}", _radiusY);
 }
 
-void readCircle(std::stringstream& ss, std::string& line, std::vector<Shape>& shapes){
+void readCircle(
+            std::stringstream& ss, 
+            std::string& line, 
+            std::vector<Shape>& shapes){
     
     Coordinate _tmpCords;
     int radius;
@@ -114,17 +130,21 @@ void readCircle(std::stringstream& ss, std::string& line, std::vector<Shape>& sh
 }
 
 
-void readShape( int i, std::string& shapeType, std::ifstream& file, 
-                std::string& line, std::stringstream& ss, 
-                std::vector<Shape>& shapes){
+void readShape( 
+            int i, std::string& shapeType,
+            std::ifstream& file,
+            std::string& line, 
+            std::stringstream& ss, 
+            std::vector<Shape>& shapes){
 
     std::println("##### {} SHAPE #####", i);
 
     std::getline(file, line);
+    cleanLineFromComments(line);
+
     ss.clear();
     ss.str(line);
-    
-    cleanLineFromComments(line);
+
     std::println("{} - {}\n", shapeType, line);
 
     switch(hashString(shapeType)){
@@ -153,20 +173,24 @@ void readShape( int i, std::string& shapeType, std::ifstream& file,
 }
 
 
-void ingestInput(std::string& fileName, int& docWidth, int& docHeight, std::vector<Shape>& shapes){
-    std::ifstream file(fileName);
+void ingestInput(
+            std::ifstream& file, 
+            double& docWidth,
+            double& docHeight, 
+            std::vector<Shape>& shapes){
+                
     std::string line;
 
     int i = 0;
     bool canvaSizeRead = false; 
     while(std::getline(file, line)){
 
+        cleanLineFromComments(line);
+
         // skip empty lines
         if (line.find_first_not_of(" \t\r\n") == std::string::npos) {
             continue;
         }
-
-        cleanLineFromComments(line);
 
         std::stringstream ss(line);
 

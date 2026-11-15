@@ -4,14 +4,13 @@
 #include <fstream>
 #include <sstream>
 
-#include "../include/input.hpp"
-#include "../include/geometry.hpp"
-
-
 int main(){
-    std::string fileName="../input.txt";
-    std::vector<Shape> shapes;
+    
+    
+    int a = 80;
 
-    ingestInput(fileName, shapes);
+    std::println("{}\n", a%80);
+
+    return 0;
 }
 

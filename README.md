@@ -1,6 +1,6 @@
 C++ library for non-overlapping shape placement because I'm unemployed
 
-Amount of hours worked: 6
+Amount of hours worked: 7
 
 yes. I could've been quicker.
 
@@ -8,7 +8,7 @@ yes. I could've been quicker.
 
 ToDo list:
 
-- display.hpp to create a standard 1000x1000 .ppm to visualize geometric shapes inserted - assuming max of 10 and each of which has a different color
+- display.hpp to create a standard 1920x1080 .ppm to visualize geometric shapes inserted - assuming max of 10 and each of which has a different color
 
 - solver.cpp to "unoverlap" shapes and return the proper coordinates
 
