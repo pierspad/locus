@@ -7,16 +7,15 @@
 #include <string>
 #include <cmath>
 
+
 struct Coordinate{
     double x;
     double y;
 
 
-    bool isEmpty(){
-        if(x == y == -1.0){
-            return true;
-        }
-        return false;
+    [[nodiscard]]
+    bool isEmpty() const{
+        return x == -1.0 && y == -1.0;
     }
 
     void clear(){
@@ -24,16 +23,26 @@ struct Coordinate{
         y = -1.0;
     }
 
+    [[nodiscard]]
+    static bool compare(const Coordinate& c1, const Coordinate& c2){
+        if(c1.x == c2.x){
+            return c1.y < c2.y; 
+        }
+        return c1.x < c2.x;
+    }
+
     void print() const{
         std::println("x: {:<4}\ty: {}", x, y);
     }
 };
+
 
 [[nodiscard]]
 inline double distanceBetweenTwoPoints( const Coordinate& c1, 
                                         const Coordinate& c2){
     return std::hypot(c2.x - c1.x, c2.y - c1.y);
 }
+
 
 struct ConvexPolygon{
     std::vector<Coordinate> coords; 
@@ -164,6 +173,7 @@ enum class ShapeCode{
     Circle,
     Unknown
 };
+
 
 inline ShapeCode hashString(const std::string& str){
     if(str == "ConvexPolygon") return ShapeCode::ConvexPolygon;

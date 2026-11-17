@@ -34,7 +34,7 @@ void cleanLineFromComments(
         }
 }
                     
-void readPolygon(
+void readConvexPolygon(
             std::stringstream& ss, 
             std::string& line, 
             std::vector<Shape>& shapes){
@@ -42,11 +42,16 @@ void readPolygon(
         Coordinate _tmpCords;
         int i=0;
         char comma;
-
+        std::vector<Coordinate> _tmpVec;
         while(ss >> _tmpCords.x >> comma >> _tmpCords.y){
+            _tmpVec.emplace_back(_tmpCords);
+            
             std::println("vertex {} - x: {:<4}\ty: {}", i, _tmpCords.x, _tmpCords.y);
             i++;
         }
+        shapes.push_back(ConvexPolygon{
+            .coords = _tmpVec,
+        });
     }
 
 void readRectangle(
@@ -149,7 +154,7 @@ void readShape(
 
     switch(hashString(shapeType)){
         case ShapeCode::ConvexPolygon:
-            readPolygon(ss, line, shapes);
+            readConvexPolygon(ss, line, shapes);
             break;
         case ShapeCode::Rectangle:
             readRectangle(ss, line, shapes);
