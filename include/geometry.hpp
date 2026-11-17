@@ -11,6 +11,19 @@ struct Coordinate{
     double x;
     double y;
 
+
+    bool isEmpty(){
+        if(x == y == -1.0){
+            return true;
+        }
+        return false;
+    }
+
+    void clear(){
+        x = -1.0;
+        y = -1.0;
+    }
+
     void print() const{
         std::println("x: {:<4}\ty: {}", x, y);
     }
