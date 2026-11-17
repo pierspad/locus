@@ -2,6 +2,14 @@ struct Color {
     std::uint8_t r;
     std::uint8_t g;
     std::uint8_t b;
+
+    bool operator==(const Color& color1){
+        return (r == color1.r) && (g == color1.g) && (b == color1.b);
+    }
+
+    bool operator!=(const Color& color1){
+        return (r != color1.r) || (g != color1.g) || (b != color1.b);
+    }
 };
 
 
