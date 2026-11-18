@@ -4,6 +4,7 @@
 #include <print>
 #include <algorithm>
 #include <fstream>
+#include <random>
 
 #include "../include/geometry.hpp"
 #include "../include/colors.hpp"
@@ -162,11 +163,14 @@ void drawRectangle(
 }
 
 
+
 //TODO
 void drawOnCanvas(
                 bool full,
                 Canvas& _canvas, 
                 const std::vector<Shape>& _shapes){
+
+
 
 
     // fare un vector di colori e cercare di selezionare un colore diverso per ogni figura
@@ -176,18 +180,18 @@ void drawOnCanvas(
 
             
             if constexpr (std::is_same_v<T, ConvexPolygon>) {
-                drawConvexPolygon(full, _canvas, color_black, concreteShape);
+                drawConvexPolygon(full, _canvas, newColor(), concreteShape);
             }
             
             if constexpr (std::is_same_v<T, Rectangle>) {
-                drawRectangle(full, _canvas, color_black, concreteShape);
+                drawRectangle(full, _canvas, newColor(), concreteShape);
             }
             /*   
             if constexpr (std::is_same_v<T, Ellipse>) {
-                drawRectangle(full, _canvas, color_black, concreteShape);
+                drawRectangle(full, _canvas, _color, concreteShape);
             }
             if constexpr (std::is_same_v<T, Circle>) {
-                drawRectangle(full, _canvas, color_black, concreteShape);
+                drawRectangle(full, _canvas, _color, concreteShape);
             }
             */
         }, shape);
