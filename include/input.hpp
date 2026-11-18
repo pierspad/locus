@@ -5,6 +5,7 @@
 #include <print>
 
 #include "../include/geometry.hpp"
+#include "../include/canvas.hpp"
 
 
 // ####################
@@ -180,8 +181,7 @@ void readShape(
 
 void ingestInput(
             std::ifstream& file, 
-            double& docWidth,
-            double& docHeight, 
+            Canvas& _canvas, 
             std::vector<Shape>& shapes){
                 
     std::string line;
@@ -200,9 +200,9 @@ void ingestInput(
         std::stringstream ss(line);
 
         if(!canvaSizeRead){
-            ss >> docWidth >> docHeight;
+            ss >> _canvas.docWidth >> _canvas.docHeight;
             canvaSizeRead = true;
-            std::println("Document - Width: {:<4}\tHeight: {:<4}",docWidth, docHeight);
+            std::println("Document - Width: {:<4}\tHeight: {:<4}",_canvas.docWidth, _canvas.docHeight);
             std::println("");
             continue;
         }

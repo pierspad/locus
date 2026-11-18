@@ -1,3 +1,5 @@
+#pragma once
+
 struct Color {
     std::uint8_t r;
     std::uint8_t g;
@@ -14,28 +16,34 @@ struct Color {
 
 
 
-Color cyan = {
+const Color color_cyan = {
     .r = 0,
     .g = 255,
     .b = 255,
 };
 
-Color magenta = {
+const Color color_magenta = {
     .r = 255,
     .g = 0,
     .b = 255,
 };
 
-Color yellow = {
+const Color color_yellow = {
     .r = 255,
     .g = 255,
     .b = 0,
 };
 
-Color black = {
+const Color color_black = {
     .r = 0,
     .g = 0,
     .b = 0,
+};
+
+const Color color_white = {
+    .r = 255,
+    .g = 255,
+    .b = 255,
 };
 
 

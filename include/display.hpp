@@ -7,29 +7,28 @@
 
 #include "../include/geometry.hpp"
 #include "../include/colors.hpp"
+#include "../include/canvas.hpp"
 
 
-std::vector<Color> canvas;
-
-void dye(Color& surface, const Color& pigment){
+void dye(
+            Color& surface, 
+            const Color& pigment){
     surface.r = pigment.r;
     surface.g = pigment.g;
     surface.b = pigment.b;
 }
 
 void printColorOnFile(
-    std::ofstream& out, 
-    const Color& color) {
+            std::ofstream& out, 
+            const Color& color) {
     out.put(char(color.r));
     out.put(char(color.g));
     out.put(char(color.b));
 }
 
 void obtainPointsBetweenAB(
-            const double docWidth,
-            const double docHeight,
+            double _canvasWidth,
             std::vector<Coordinate>& _linesBetweenVertices,
-            std::vector<Color>& _canvas,
             Coordinate a,
             Coordinate b
 ) { // Bresenham method
@@ -48,7 +47,7 @@ void obtainPointsBetweenAB(
 
     while (true) {
 
-        double index = (docWidth * y0) + x0;
+        double index = (_canvasWidth* y0) + x0;
         _linesBetweenVertices.emplace_back(Coordinate{
             .x = x0,
             .y = y0
@@ -71,29 +70,25 @@ void obtainPointsBetweenAB(
 }
 
 void drawLineAB( 
-            const double docWidth,
-            const double docHeight,
+            Canvas& _canvas, 
             const Coordinate a,
             const Coordinate b,
             const Color& pigment,
-            std::vector<Coordinate>& _linesBetweenVertices,
-            std::vector<Color>& _canvas
+            std::vector<Coordinate>& _linesBetweenVertices
 ) { 
-    obtainPointsBetweenAB(docWidth, docHeight, _linesBetweenVertices, _canvas, a, b);
+    obtainPointsBetweenAB(_canvas.docWidth, _linesBetweenVertices, a, b);
 
     for(Coordinate c : _linesBetweenVertices){
-        double index = (docWidth * c.y) + c.x;
-        dye(_canvas[index], pigment);
+        double index = (_canvas.docWidth * c.y) + c.x;
+        dye(_canvas.pixels[index], pigment);
     }
 }
 
 
 void drawConvexPolygon(
                 bool full,
-                const double docWidth, 
-                const double docHeight,
+                Canvas& _canvas, 
                 const Color& pigment,
-                std::vector<Color>& _canvas, 
                 const ConvexPolygon& _convPol){
 
     
@@ -106,7 +101,7 @@ void drawConvexPolygon(
     for(int i = 0; i<_convPol.coords.size() ; i++){
         Coordinate point1 = _convPol.coords[i];
         Coordinate point2 = _convPol.coords[(i+1) % _convPol.coords.size() ];
-        drawLineAB(docWidth, docHeight, point1, point2, pigment, linesBetweenVertices, _canvas);
+        drawLineAB(_canvas, point1, point2, pigment, linesBetweenVertices);
     }
     if(full){
 
@@ -128,7 +123,7 @@ void drawConvexPolygon(
                 continue;
             }
             if(_temp1.x == _temp2.x ){
-                drawLineAB(docWidth, docHeight, _temp1, _temp2, pigment, linesBetweenVertices, _canvas);
+                drawLineAB(_canvas, _temp1, _temp2, pigment, linesBetweenVertices);
                 foundSecondPoint = false;
                 _temp1 = c;
             }
@@ -140,10 +135,8 @@ void drawConvexPolygon(
 
 void drawRectangle(
                 bool full,
-                const double docWidth, 
-                const double docHeight,
+                Canvas& _canvas, 
                 const Color& pigment,
-                std::vector<Color>& _canvas, 
                 const Rectangle& _rect){
 
 
@@ -157,13 +150,13 @@ void drawRectangle(
     for (double i = 0; i < recHeight; i++) {
         for (double j = 0; j < recWidth; j++) {
 
-            double index = (docWidth * (TLy + i)) + TLx + j;
+            double index = (_canvas.docWidth * (TLy + i)) + TLx + j;
 
             if(!full && i!=0 && i != recHeight-1 && j!=0 && j!=recWidth-1){
                 continue;
             }
 
-            dye(_canvas[index], pigment);
+            dye(_canvas.pixels[index], pigment);
         }
     }
 }
@@ -171,16 +164,10 @@ void drawRectangle(
 
 //TODO
 void drawOnCanvas(
-                const double docWidth, 
-                const double docHeight,
                 bool full,
-                std::vector<Color>& _canvas, 
+                Canvas& _canvas, 
                 const std::vector<Shape>& _shapes){
 
-    _canvas.assign(
-        docWidth * docHeight,
-        Color{255, 255, 255}
-    );
 
     // fare un vector di colori e cercare di selezionare un colore diverso per ogni figura
     for (const Shape& shape : _shapes) {
@@ -189,18 +176,18 @@ void drawOnCanvas(
 
             
             if constexpr (std::is_same_v<T, ConvexPolygon>) {
-                drawConvexPolygon(full, docWidth, docHeight, black, _canvas, concreteShape);
+                drawConvexPolygon(full, _canvas, color_black, concreteShape);
             }
             
             if constexpr (std::is_same_v<T, Rectangle>) {
-                drawRectangle(full, docWidth, docHeight, black, _canvas, concreteShape);
+                drawRectangle(full, _canvas, color_black, concreteShape);
             }
             /*   
             if constexpr (std::is_same_v<T, Ellipse>) {
-                drawRectangle(full, docWidth, docHeight, black, _canvas, concreteShape);
+                drawRectangle(full, _canvas, color_black, concreteShape);
             }
             if constexpr (std::is_same_v<T, Circle>) {
-                drawRectangle(full, docWidth, docHeight, black, _canvas, concreteShape);
+                drawRectangle(full, _canvas, color_black, concreteShape);
             }
             */
         }, shape);
@@ -218,23 +205,17 @@ void writePPMHeader(
 
 void drawCanvasOnFile(
                 std::ofstream& out, 
-                const int docWidth, 
-                const int docHeight,
+                Canvas& _canvas, 
                 const int screenWidth, 
-                const int screenHeight, 
-                std::vector<Color>& _canvas){
+                const int screenHeight){
     
-    int _tempx, _tempy;
-    Color _tempColor;
-
     for (int y = 0; y < screenHeight; y++) {
         for (int x = 0; x < screenWidth; x++) {
-            _tempx = x * docWidth / screenWidth;
-            _tempy = y * docHeight / screenHeight;
+            const int _tempx = x * _canvas.docWidth / screenWidth;
+            const int _tempy = y * _canvas.docHeight / screenHeight;
             
-            _tempColor = _canvas[(_tempy * docWidth) + _tempx];
+            const Color _tempColor = _canvas.pixels[(_tempy * _canvas.docWidth) + _tempx];
             printColorOnFile(out, _tempColor);
-            
         }
     }
 
@@ -242,18 +223,17 @@ void drawCanvasOnFile(
 
 void visualizeShapes(
                 std::ofstream& out,
-                const double docWidth, 
-                const double docHeight, 
+                Canvas& _canvas, 
                 const double screenWidth, 
                 const double screenHeight, 
                 const bool fullShapes,
                 const std::vector<Shape>& shapes){
 
-    drawOnCanvas(docWidth, docHeight, fullShapes, canvas, shapes);
+    drawOnCanvas(fullShapes, _canvas, shapes);
 
     writePPMHeader(out, screenWidth, screenHeight);
 
-    drawCanvasOnFile(out, docWidth, docHeight, screenWidth, screenHeight,  canvas);
+    drawCanvasOnFile(out, _canvas, screenWidth, screenHeight);
     
     return;
 }
