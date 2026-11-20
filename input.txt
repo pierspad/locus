@@ -2,33 +2,21 @@
 
 
 
+50 50
+
+Rectangle 
+10 6 20,20  
+
+Rectangle 
+5 10 27,22  
 
 
 
-
-
-
-1920 1080
-
-Square 
-8 3,3  
-
-Square 
-125 1080,52  
-
-Square 
-400 756,354  
-
-
-ConvexPolygon 
-100,80 70,110 90,130 140,120 120,100
-
-
-
-
+# ConvexPolygon 
+# 100,80 70,110 90,130 140,120 120,100
+#
 # Rectangle 
 # 10 4 4,4 
-
 # 
 # ConvexPolygon 
 # 1,1 2,2 3,3 4,4 5,5

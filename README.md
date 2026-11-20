@@ -10,7 +10,11 @@ yes. I could've been quicker.
 
 ToDo list:
 
-- solver.cpp to "unoverlap" shapes (if thema re overlapped) and rewrites the output.ppm image after few seconds of sleep with the shapes unoverlapped !MUST KEEP THE SAME COLORS FOR EACH SHAPE (boring, will do later)
+- solver.cpp to "unoverlap" shapes (if thema re overlapped) and rewrites the output.ppm image after few seconds of sleep with the shapes unoverlapped 
+
+- split hpp and cpp in different files
+
+- -!MUST KEEP THE SAME COLORS FOR EACH SHAPE (boring, will do later)
 
 - test.cpp that, given the simulated case of a graph and a legend will use solver to calculate the proper coordinates and return an image without overlapping
 
