@@ -4,6 +4,8 @@
 #include <cmath>        // std::abs
 #include <variant>      // std::decay_t, std::is_same_v
 
+#include <print>
+
 #include "../include/display.hpp"
 #include "../include/colors.hpp"
 
@@ -168,33 +170,38 @@ namespace {
     void drawOnCanvas(
                     bool full,
                     Canvas& _canvas, 
+                    std::vector<Color>& _colorsUsed,
                     const std::vector<Shape>& _shapes){
 
+        bool generateNewColors = false;
+        if(_colorsUsed.empty()){
+            generateNewColors = true;
+            std::println("isEmpty");
+        }
 
 
-
-        // fare un vector di colori e cercare di selezionare un colore diverso per ogni figura
-        for (const Shape& shape : _shapes) {
+        for(size_t i = 0 ; i<_shapes.size(); i++){
             std::visit([&](const auto& concreteShape) {
                 using T = std::decay_t<decltype(concreteShape)>;
 
-                
+                Color _pigment = generateNewColors ? _colorsUsed.emplace_back(newColor()) : _colorsUsed[i];
+
                 if constexpr (std::is_same_v<T, ConvexPolygon>) {
-                    drawConvexPolygon(full, _canvas, newColor(), concreteShape);
+                    drawConvexPolygon(full, _canvas, _pigment, concreteShape);
                 }
                 
                 if constexpr (std::is_same_v<T, Rectangle>) {
-                    drawRectangle(full, _canvas, newColor(), concreteShape);
+                    drawRectangle(full, _canvas, _pigment, concreteShape);
                 }
                 /*   
                 if constexpr (std::is_same_v<T, Ellipse>) {
-                    drawRectangle(full, _canvas, _color, concreteShape);
+                    drawRectangle(full, _canvas, _pigment, concreteShape);
                 }
                 if constexpr (std::is_same_v<T, Circle>) {
-                    drawRectangle(full, _canvas, _color, concreteShape);
+                    drawRectangle(full, _canvas, _pigment, concreteShape);
                 }
                 */
-            }, shape);
+            }, _shapes[i]);
         }
     }
 
@@ -234,9 +241,11 @@ void visualizeShapes(
                 const double screenWidth, 
                 const double screenHeight, 
                 const bool fullShapes,
+                std::vector<Color>& _colorsUsed,
                 const std::vector<Shape>& shapes){
 
-    drawOnCanvas(fullShapes, _canvas, shapes);
+                    
+    drawOnCanvas(fullShapes, _canvas, _colorsUsed, shapes);
 
     writePPMHeader(out, screenWidth, screenHeight);
 

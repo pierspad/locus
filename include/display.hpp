@@ -13,4 +13,5 @@ void visualizeShapes(
                 const double screenWidth, 
                 const double screenHeight, 
                 const bool fullShapes,
+                std::vector<Color>& _colorsUsed,
                 const std::vector<Shape>& shapes);

@@ -29,6 +29,8 @@ int main(int argc, char* argv[]) {
     std::vector<Shape> shapes;
     std::vector<Color> pixels;
 
+    std::vector<Color> _colorsUsed;
+
     double _screenWidth = 1920;
     double _screenHeight = 1080;
 
@@ -43,11 +45,11 @@ int main(int argc, char* argv[]) {
         color_white
     );
 
-    visualizeShapes(output, canvas, _screenWidth, _screenHeight, printFullShapes, shapes);
+    visualizeShapes(output, canvas, _screenWidth, _screenHeight, printFullShapes, _colorsUsed, shapes);
 
     //unoverlapShapes(shapes);
 
-    visualizeShapes(fixed, canvas, _screenWidth, _screenHeight, printFullShapes, shapes);
+    visualizeShapes(fixed, canvas, _screenWidth, _screenHeight, printFullShapes,  _colorsUsed, shapes);
 
     input.close();
     output.close();
