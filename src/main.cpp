@@ -1,3 +1,5 @@
+#include <filesystem>
+#include <print>
 
 #include "../include/input.hpp"
 #include "../include/geometry.hpp"
@@ -6,16 +8,23 @@
 #include "../include/colors.hpp"
 #include "../include/solver.hpp"
 
+namespace fs = std::filesystem;
 
-int main(){
-    std::string inputFileName="../input.txt";
-    std::ifstream input(inputFileName);
+int main(int argc, char* argv[]) {
+    const std::span args(argv,argc);
 
-    std::string outputFileName="../output.ppm";
-    std::ofstream output(outputFileName);
+    fs::path inputPath  = (args.size() > 1) ? args[1] : "input.txt";
+    fs::path outputPath = (args.size() > 2) ? args[2] : "output.ppm";
+    fs::path fixedOutputPath  = (args.size() > 3) ? args[3] : "output_fixed.ppm";
 
-    std::string fixedFileName="../output_fixed.ppm";
-    std::ofstream fixed(fixedFileName);
+    if (!fs::exists(inputPath)) {
+        std::println(stderr, "Errore: il file '{}' non esiste.", inputPath.string());
+        return 1;
+    }
+
+    std::ifstream input(inputPath);
+    std::ofstream output(outputPath);
+    std::ofstream fixed(fixedOutputPath);
 
     std::vector<Shape> shapes;
     std::vector<Color> pixels;
@@ -36,9 +45,7 @@ int main(){
 
     visualizeShapes(output, canvas, _screenWidth, _screenHeight, printFullShapes, shapes);
 
-    unoverlapShapes(shapes);
-
-    
+    //unoverlapShapes(shapes);
 
     visualizeShapes(fixed, canvas, _screenWidth, _screenHeight, printFullShapes, shapes);
 

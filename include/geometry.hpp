@@ -1,159 +1,69 @@
 #pragma once
 
-#include <print>
+#include <compare>
+#include <string>
 #include <vector>
 #include <variant>
-#include <numbers>
-#include <string>
-#include <cmath>
-
 
 struct Coordinate{
     double x;
     double y;
 
+    [[nodiscard]] bool isEmpty() const;
+    [[nodiscard]] auto operator<=>(const Coordinate&) const = default;
 
-    [[nodiscard]]
-    bool isEmpty() const{
-        return x == -1.0 && y == -1.0;
-    }
-
-    void clear(){
-        x = -1.0;
-        y = -1.0;
-    }
-
-    [[nodiscard]]
-    static bool compare(const Coordinate& c1, const Coordinate& c2){
-        if(c1.x == c2.x){
-            return c1.y < c2.y; 
-        }
-        return c1.x < c2.x;
-    }
-
-    void print() const{
-        std::println("x: {:<4}\ty: {}", x, y);
-    }
+    void clear();
+    void print() const;
 };
 
 
 [[nodiscard]]
-inline double distanceBetweenTwoPoints( const Coordinate& c1, 
-                                        const Coordinate& c2){
-    return std::hypot(c2.x - c1.x, c2.y - c1.y);
-}
+double distanceBetweenTwoPoints( 
+                            const Coordinate& c1, 
+                            const Coordinate& c2);
 
 
 struct ConvexPolygon{
     std::vector<Coordinate> coords; 
     
-    [[nodiscard]]
-    double getPerimeter() const{
-        double perim = 0.0;
-        if(coords.size()<2){
-            std::println("ERROR - NOT ENOUGH VERTICES");
-        }
-        
-        for(std::size_t i = 0; i<coords.size(); i++){
-            perim += distanceBetweenTwoPoints(
-                        coords[i], 
-                        coords[(i + 1) % coords.size()]
-                    );
-        }
-        return perim;
-    };
+    [[nodiscard]] double getPerimeter() const;
+    [[nodiscard]] double getArea() const;
+    [[nodiscard]] Coordinate getCentroid() const;
 
-    [[nodiscard]]
-    double getArea() const{
-        double area = 0.0;
-        for(std::size_t i = 0; i<coords.size(); i++){
-            const auto j = (i + 1) % coords.size();
-
-            area += coords[i].x * coords[j].y -
-                    coords[j].x * coords[i].y;
-        }
-        return abs(area)/2;
-    }
-
-    void print() const{
-        for (int i = 0; i<coords.size(); i++){
-            std::print("vertex {} - ",i);
-            coords[i].print();
-        }
-    }
+    void print() const;
 };
 
 struct Rectangle{
     Coordinate coordinate; 
     double width, height;
     
-    [[nodiscard]]
-    double getPerimeter() const{
-        return (width + height) * 2;
-    };
+    [[nodiscard]] double getPerimeter() const;
+    [[nodiscard]] double getArea() const;
+    [[nodiscard]] Coordinate getCentroid() const;
 
-    [[nodiscard]]
-    double getArea() const{
-        return width * height;
-    }
-
-    void print() const{
-        std::println("vertex {} - x: {:<4}\ty: {}", 0, coordinate.x,          coordinate.y        );
-        std::println("vertex {} - x: {:<4}\ty: {}", 1, coordinate.x + width,  coordinate.y        );
-        std::println("vertex {} - x: {:<4}\ty: {}", 2, coordinate.x + width,  coordinate.y + height );
-        std::println("vertex {} - x: {:<4}\ty: {}", 3, coordinate.x,          coordinate.y + height );
-    }
+    void print() const;
 };
 
 struct Ellipse{
     Coordinate center;
     double radiusX, radiusY;
     
-    [[nodiscard]]
-    double getPerimeter() const {
-        const double a = radiusX;
-        const double b = radiusY;
+    [[nodiscard]] double getPerimeter() const;
+    [[nodiscard]] double getArea() const;
+    [[nodiscard]] Coordinate getCentroid() const;
 
-        return std::numbers::pi *
-            (3 * (a + b) -
-            std::sqrt((3*a + b) * (a + 3*b)));
-    }
-
-    [[nodiscard]]
-    double getArea() const {
-        return std::numbers::pi * radiusX * radiusY;
-    }
-
-    void print() const {
-        std::print("center: ");
-        center.print();
-
-        std::println("radiusX: {}", radiusX);
-        std::println("radiusY: {}", radiusY);
-    }
+    void print() const;
 };
 
 struct Circle{
     Coordinate center;
     double radius;
 
-    [[nodiscard]]
-    double getPerimeter() const{
-        return std::numbers::pi * 2 * radius; 
-    };
-    
-    [[nodiscard]]
-    double getArea() const{
-        return std::numbers::pi * radius * radius;
-    }
+    [[nodiscard]] double getPerimeter() const;
+    [[nodiscard]] double getArea() const;
+    [[nodiscard]] Coordinate getCentroid() const;
 
-    void print() const{
-        std::print("center: ");
-        center.print();
-        std::println("");
-        std::print("radius: {} - ", radius);
-        center.print();
-    }
+    void print() const;
 };
 
 
@@ -175,7 +85,8 @@ enum class ShapeCode{
 };
 
 
-inline ShapeCode hashString(const std::string& str){
+[[nodiscard]]
+constexpr ShapeCode hashString(const std::string& str){
     if(str == "ConvexPolygon") return ShapeCode::ConvexPolygon;
     if(str == "Rectangle") return ShapeCode::Rectangle;
     if(str == "Square") return ShapeCode::Square;

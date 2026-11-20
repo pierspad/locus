@@ -107,7 +107,7 @@ namespace {
         }
         if(full){
 
-            std::sort(linesBetweenVertices.begin(), linesBetweenVertices.end(), Coordinate::compare);
+            std::ranges::sort(linesBetweenVertices);
 
             for(Coordinate c : linesBetweenVertices){
                 if(!foundFirstPoint){

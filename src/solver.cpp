@@ -1,28 +1,29 @@
 
-
-
 #include <vector>           // std::vector
 #include <unordered_set>    // std::unordered_set
 
 #include "../include/geometry.hpp"
 
-// TODO
 namespace{
     // CBB stands for Circle Bounding Boxes
     // Exact stands for Exact Bounding Boxes
 
+    // TODO
     bool areOverlappingCBB(const Shape& s1, const Shape& s2){
         return false;
     }    
     
+    // TODO
     bool areOverlappingEBB(const Shape& s1, const Shape& s2){
         return false;
     }
 
+    // TODO
     bool fixedByCBB(std::vector<Shape>& _shapes, std::unordered_set<size_t>& _toFix){
         return false;
     }
 
+    // TODO
     bool fixedByEBB(std::vector<Shape>& _shapes, std::unordered_set<size_t>& _toFix){
         return false;
     }
@@ -49,7 +50,7 @@ void unoverlapShapesCBB(std::vector<Shape>& _shapes){
         fixedByCBB(_shapes, toFix);
         i++;
     }
-    while(!toFix.empty() || i>10); // avoid impossible configuration stopping after 10 trials
+    while( ! (toFix.empty() || i>10) ); // avoid impossible configuration stopping after 10 trials
 
 }
 
@@ -72,6 +73,6 @@ void unoverlapShapesEBB(std::vector<Shape>& _shapes){
         fixedByEBB(_shapes, toFix);
         i++;
     }
-    while(!toFix.empty() || i>10); // avoid impossible configuration stopping after 10 trials
+    while( ! (toFix.empty() || i>10) ); // avoid impossible configuration stopping after 10 trials
 
 }
